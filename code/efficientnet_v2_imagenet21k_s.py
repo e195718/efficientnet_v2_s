@@ -73,7 +73,63 @@ dynamic_size = False
 model_name = "efficientnetv2-s-21k"
 model_handle = "https://tfhub.dev/google/imagenet/efficientnet_v2_imagenet21k_s/classification/2"
 
+#交差検証あり
+do_fine_tuning = True
+kf = KFold(n_splits=3, shuffle=True)
+all_loss=[]
+all_val_loss=[]
+all_acc=[]
+all_val_acc=[]
+ep=3
+for train_index, val_index in kf.split(train_X,train_y):
 
+    train_data=train_X[train_index]
+    train_label=train_y[train_index]
+    val_data=train_X[val_index]
+    val_label=train_y[val_index]
+
+    model = tf.keras.Sequential([
+    tf.keras.layers.InputLayer(input_shape=IMAGE_SIZE + (3,)),
+    hub.KerasLayer(model_handle, trainable=do_fine_tuning),
+    tf.keras.layers.Dropout(rate=0.2),
+    tf.keras.layers.Dense(2,
+                          kernel_regularizer=tf.keras.regularizers.l2(0.01),activation='softmax')
+    ])
+    model.build((None,)+IMAGE_SIZE+(3,))
+
+    model.compile(
+    optimizer=tf.keras.optimizers.SGD(lr=0.005, momentum=0.9), 
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy'])
+    
+    history=model.fit(train_data,
+                      train_label,
+                      epochs=ep,
+                      batch_size=1,
+                      validation_data=(val_data,val_label))
+
+    loss=history.history['loss']
+    val_loss=history.history['val_loss']
+    acc=history.history['accuracy']
+    val_acc=history.history['val_accuracy']
+
+    all_loss.append(loss)
+    all_val_loss.append(val_loss)
+    all_acc.append(acc)
+    all_val_acc.append(val_acc)
+
+
+ave_all_loss=[
+    np.mean([x[i] for x in all_loss]) for i in range(ep)]
+ave_all_val_loss=[
+    np.mean([x[i] for x in all_val_loss]) for i in range(ep)]
+ave_all_acc=[
+    np.mean([x[i] for x in all_acc]) for i in range(ep)]
+ave_all_val_acc=[
+    np.mean([x[i] for x in all_val_acc]) for i in range(ep)]
+
+#交差検証なし
+"""
 do_fine_tuning = True
 print("Building model with", model_handle)
 model = tf.keras.Sequential([
@@ -94,7 +150,7 @@ model.compile(
 
 
 history = model.fit(train_X, train_y)
-
+"""
 
 test_loss, test_acc = model.evaluate(test_X, test_y, verbose=0)
 
