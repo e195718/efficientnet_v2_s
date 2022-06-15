@@ -10,3 +10,4 @@ From: tensorflow_latest-gpu-py3.sif
     pip install --upgrade pip
     pip install keras==2.3 keras-bert sentencepiece scikit-learn transformers matplotlib pydot
     pip install tensorflow_hub
+    pip install opencv-python
