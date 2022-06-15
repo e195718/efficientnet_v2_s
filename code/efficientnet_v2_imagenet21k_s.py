@@ -22,6 +22,8 @@ CATEGORIES = {"good", "scratch"}
 IMG_SIZE = 384
 training_data = []
 
+print(tf.test.is_gpu_available)
+print(tf.test.gpu_device_name()) # => GPU (device: 0, name: Tesla V100S-PCIE-32GB, pci bus id: 0000:3b:00.0, compute capability: 7.0)
 
 def create_training_data():
     for class_num, category in enumerate(CATEGORIES):
