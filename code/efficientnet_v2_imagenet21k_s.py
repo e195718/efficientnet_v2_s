@@ -17,7 +17,7 @@ import keras
 from sklearn.model_selection import KFold
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
-DATADIR = "/home/student/e19/e195718/efficientnetv2/efficientnet_v2_s/data"
+DATADIR = "/home/student/e19/e195718/efficientnetv2/efficientnet_v2_s/data/carpet2"
 CATEGORIES = {"good", "scratch"}
 IMG_SIZE = 384
 training_data = []
