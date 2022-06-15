@@ -3,6 +3,8 @@ From: tensorflow_latest-gpu-py3.sif
 # singularity pull docker://tensorflow/tensorflow:latest-gpu-py3
 
 %post
+    apt-key del 3bf863cc
+    apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
     apt-get update
     apt install -y --no-install-recommends graphviz
     pip install --upgrade pip
