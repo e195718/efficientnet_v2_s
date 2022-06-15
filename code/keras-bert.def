@@ -9,3 +9,4 @@ From: tensorflow_latest-gpu-py3.sif
     apt install -y --no-install-recommends graphviz
     pip install --upgrade pip
     pip install keras==2.3 keras-bert sentencepiece scikit-learn transformers matplotlib pydot
+    pip install tensorflow_hub
