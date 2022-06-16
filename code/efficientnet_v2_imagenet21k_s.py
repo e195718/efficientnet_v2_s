@@ -82,7 +82,7 @@ all_loss=[]
 all_val_loss=[]
 all_acc=[]
 all_val_acc=[]
-ep=3
+ep=1
 for train_index, val_index in kf.split(train_X,train_y):
 
     train_data=train_X[train_index]
