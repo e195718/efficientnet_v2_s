@@ -77,7 +77,7 @@ model_handle = "https://tfhub.dev/google/imagenet/efficientnet_v2_imagenet21k_s/
 
 #交差検証あり
 do_fine_tuning = True
-kf = KFold(n_splits=3, shuffle=True)
+kf = KFold(n_splits=10, shuffle=True)
 all_loss=[]
 all_val_loss=[]
 all_acc=[]
@@ -195,7 +195,7 @@ for i in range(len(metrics)):
     plt_test = history.history['val_' + metric]  # historyからテストデータの評価を取り出す
     
     plt.plot(plt_train, label='training')  # 訓練データの評価をグラフにプロット
-    plt.plot(plt_test, label='test')  # テストデータの評価をグラフにプロット
+    plt.plot(plt_test, label='validation')  # テストデータの評価をグラフにプロット
     plt.legend()  # ラベルの表示
     fig_path = 'Efficientnet_' + metric + '.png'
     plt.savefig(fig_path)
