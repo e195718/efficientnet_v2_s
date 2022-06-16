@@ -6,5 +6,5 @@
 #SBATCH --gpus tesla:1
 
 date
-singularity exec --nv ~/SIF-images/tensorflow_latest-gpu-py3.sif python efficientnet_v2_imagenet21k_s.py
+singularity exec --nv ~/efficientnetv2/efficientnet_v2_s/code/tensorflow_latest-gpu-py3.sif python efficientnet_v2_imagenet21k_s.py
 date
