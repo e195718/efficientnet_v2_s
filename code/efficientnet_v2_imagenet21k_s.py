@@ -197,5 +197,7 @@ for i in range(len(metrics)):
     plt.plot(plt_train, label='training')  # 訓練データの評価をグラフにプロット
     plt.plot(plt_test, label='test')  # テストデータの評価をグラフにプロット
     plt.legend()  # ラベルの表示
+    fig_path = 'Efficientnet_' + metric + '.png'
+    plt.savefig(fig_path)
     
 plt.show()
