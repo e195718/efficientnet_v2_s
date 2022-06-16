@@ -7,7 +7,7 @@ From: tensorflow_latest-gpu-py3.sif
     apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
     apt-get update
     apt-get install -y libgl1-mesa-dev
-    apt-get install -y libsixel-bin
+    apt install -y --no-install-recommends graphviz
     pip install --upgrade pip
     pip install keras==2.3 keras-bert sentencepiece scikit-learn transformers matplotlib pydot
     pip install tensorflow-gpu==2.2.0
