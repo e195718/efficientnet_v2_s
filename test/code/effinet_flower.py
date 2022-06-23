@@ -1,24 +1,37 @@
-import argparse
-import numpy as np
-import os
-import logging
 import tensorflow as tf
 import tensorflow_hub as hub
+from sklearn.model_selection import train_test_split
+
+import requests
+from PIL import Image
+from io import BytesIO
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+import os
+import cv2
+import random
+from sklearn.model_selection import StratifiedKFold
+import keras
+from sklearn.model_selection import KFold
+
+import logging
 import tensorflow_datasets as tfds
+import argparse
 
 
-EPOCHS = 5
-BATCH_SIZE = 32
-LEARNING_RATE = 0.001
+EPOCHS = 1
+BATCH_SIZE = 1
+LEARNING_RATE = 0.1
 DROPOUT_RATE = 0.3
 EARLY_STOPPING_TRAIN_ACCURACY = 0.995
 TF_AUTOTUNE = tf.data.experimental.AUTOTUNE
-TF_HUB_MODEL_URL = 'https://tfhub.dev/google/inaturalist/inception_v3/feature_vector/4'
+TF_HUB_MODEL_URL = 'https://tfhub.dev/google/imagenet/efficientnet_v2_imagenet21k_s/classification/2'
 TF_DATASET_NAME = 'oxford_flowers102'
-IMAGE_SIZE = (299, 299)
+IMAGE_SIZE = (384, 384)
 SHUFFLE_BUFFER_SIZE = 473
 MODEL_VERSION = '1'
-
 
 class EarlyStoppingCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
@@ -26,7 +39,6 @@ class EarlyStoppingCallback(tf.keras.callbacks.Callback):
             print(
                 f"\nEarly stopping at {logs.get('accuracy'):.4f} > {EARLY_STOPPING_TRAIN_ACCURACY}!\n")
             self.model.stop_training = True
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -148,9 +160,3 @@ if __name__ == "__main__":
 
     for metric, value in zip(model.metrics_names, eval_results):
         print(metric + ': {:.4f}'.format(value))
-
-    export_path = os.path.join(args.sm_model_dir, args.model_version)
-    print(
-        f'\nModel version: {args.model_version} exported to: {export_path}\n')
-
-    model.save(export_path)
